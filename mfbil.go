@@ -40,6 +40,31 @@ func (l *Language) AddToSource(line string) {
 	}
 }
 
+func search(element int, array []int) int {
+	var index = -1
+
+	for i, v := range array {
+		if element == v {
+			index = i
+			break
+		}
+	}
+
+	return index
+}
+
+func open_bracket(l *Language) {
+	if l.pos == 0 {
+		l.pos = search(']', l.memory[:]) + 1
+	}
+}
+
+func close_bracket(l *Language) {
+	if l.pos != 0 {
+		l.pos = search('[', l.memory[:]) + 1
+	}
+}
+
 func main() {
 	var program Language
 
@@ -49,6 +74,8 @@ func main() {
 		'+': func(l *Language) { l.memory[l.pos]++ },
 		'-': func(l *Language) { l.memory[l.pos]-- },
 		'.': func(l *Language) { fmt.Println(l.memory[l.pos]) },
+		'[': func(l *Language) { open_bracket(l) },
+		']': func(l *Language) { close_bracket(l) },
 	}
 
 	for t, f := range tokens {
