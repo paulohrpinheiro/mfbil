@@ -8,18 +8,27 @@ import (
 )
 
 type Language struct {
-	source []rune
-	tokens map[rune]func(*Language)
-	memory [100]int
-	pos    int
+	source      []rune
+	tokens      map[rune]func(*Language)
+	memory      [100]int
+	pos         int
+	instruction int
 }
 
 func (l *Language) Execute() {
-	for _, token := range l.source {
+	for {
+		var token = l.source[l.instruction]
+
 		if function, ok := l.tokens[token]; ok {
 			function(l)
 		} else {
 			log.Fatalf("Invalid token [%c]\n", token)
+		}
+
+		l.instruction++
+
+		if l.instruction >= len(l.source) {
+			break
 		}
 	}
 }
@@ -40,7 +49,7 @@ func (l *Language) AddToSource(line string) {
 	}
 }
 
-func search(element int, array []int) int {
+func search(element rune, array []rune) int {
 	var index = -1
 
 	for i, v := range array {
@@ -54,15 +63,17 @@ func search(element int, array []int) int {
 }
 
 func open_bracket(l *Language) {
-	if l.pos == 0 {
-		l.pos = search(']', l.memory[:]) + 1
+	if l.memory[l.pos] == 0 {
+		l.instruction = search(']', l.source[:])
 	}
+
 }
 
 func close_bracket(l *Language) {
-	if l.pos != 0 {
-		l.pos = search('[', l.memory[:]) + 1
+	if l.memory[l.pos] != 0 {
+		l.instruction = search('[', l.source[:])
 	}
+
 }
 
 func main() {
