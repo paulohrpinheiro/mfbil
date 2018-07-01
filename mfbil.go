@@ -11,6 +11,7 @@ type Language struct {
 	source      []rune
 	tokens      map[rune]func(*Language)
 	memory      [100]int
+	loops       []int
 	pos         int
 	instruction int
 }
@@ -32,7 +33,6 @@ func (l *Language) Execute() {
 		}
 
 		l.instruction++
-
 		if l.instruction >= len(l.source) {
 			break
 		}
@@ -71,15 +71,17 @@ func search(element rune, array []rune) int {
 func open_bracket(l *Language) {
 	if l.memory[l.pos] == 0 {
 		l.instruction = search(']', l.source[:])
+	} else {
+		l.loops = append(l.loops, l.instruction)
 	}
-
 }
 
 func close_bracket(l *Language) {
-	if l.memory[l.pos] != 0 {
-		l.instruction = search('[', l.source[:])
-	}
+	var size = len(l.loops) - 1
 
+	if l.memory[l.pos] != 0 {
+		l.instruction, l.loops = l.loops[size], l.loops[:size]
+	}
 }
 
 func main() {
