@@ -25,6 +25,12 @@ func (l *Language) Execute() {
 			log.Fatalf("Invalid token [%c]\n", token)
 		}
 
+		if l.pos < 0 {
+			l.pos = len(l.memory)
+		} else if l.pos >= len(l.memory) {
+			l.pos = 0
+		}
+
 		l.instruction++
 
 		if l.instruction >= len(l.source) {
