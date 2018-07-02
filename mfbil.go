@@ -11,7 +11,6 @@ type Language struct {
 	source      []rune
 	tokens      map[rune]func(*Language)
 	memory      [100]int
-	loops       []int
 	pos         int
 	instruction int
 }
