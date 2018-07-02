@@ -27,7 +27,7 @@ func (l *Language) Execute() {
 		}
 
 		if l.pos < 0 {
-			l.pos = len(l.memory)
+			l.pos = len(l.memory) - 1
 		} else if l.pos >= len(l.memory) {
 			l.pos = 0
 		}
