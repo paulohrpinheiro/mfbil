@@ -69,19 +69,34 @@ func search(element rune, array []rune) int {
 }
 
 func open_bracket(l *Language) {
-	if l.memory[l.pos] == 0 {
-		l.instruction = search(']', l.source[:])
-	} else {
-		l.loops = append(l.loops, l.instruction)
+	if l.memory[l.pos] != 0 {
+		return
 	}
+
+	for depth := 1; depth > 0; {
+		l.instruction++
+
+		instruction := l.source[l.instruction]
+		if instruction == '[' {
+			depth++
+		} else if instruction == ']' {
+			depth--
+		}
+	}
+
 }
 
 func close_bracket(l *Language) {
-	var size = len(l.loops) - 1
-
-	if l.memory[l.pos] != 0 {
-		l.instruction, l.loops = l.loops[size], l.loops[:size]
+	for depth := 1; depth > 0; {
+		l.instruction--
+		instruction := l.source[l.instruction]
+		if instruction == '[' {
+			depth--
+		} else if instruction == ']' {
+			depth++
+		}
 	}
+	l.instruction--
 }
 
 func main() {
