@@ -92,7 +92,7 @@ func main() {
 		'<': func(l *Language) { l.pos-- },
 		'+': func(l *Language) { l.memory[l.pos]++ },
 		'-': func(l *Language) { l.memory[l.pos]-- },
-		'.': func(l *Language) { fmt.Println(l.memory[l.pos]) },
+		'.': func(l *Language) { fmt.Print(string(l.memory[l.pos])) },
 		'[': func(l *Language) { open_bracket(l) },
 		']': func(l *Language) { close_bracket(l) },
 	}
