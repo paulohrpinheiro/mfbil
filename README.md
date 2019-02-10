@@ -1,6 +1,6 @@
 # mfbil
 
-My brianf*ck implementation
+My brainf*ck implementation
 
 ## Fisrt article (in pt_BR)
 
